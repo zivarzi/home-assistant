@@ -1,45 +1,45 @@
 # based on the incredible Dima Goltsman docker compose file
 version: '3.8'
 services:
-
           
-    mysql:
-        restart: always
-        hostname: mysql
-        container_name: mysql
-        image: mysql
-        environment:
-          PUID: 0
-          PGID: 0
-          TZ: "Asia/Jerusalem"
-          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-          MYSQL_ROOT_HOST: "%"
-        cap_add:
-          - SYS_NICE 
-        ports:
-          - "3306:3306"
-          - "33060:33060"
-        volumes:
-          - /home/ziv/docker-mounts/mysql/data:/var/lib/mysql
-          - /home/ziv/docker-mounts/mysql/etc-mysql/my.cnf:/etc/mysql/my.cnf
-          - /home/ziv/docker-mounts/mysql/etc-mysql/conf.d:/etc/mysql/conf.d
-          - /home/ziv/docker-mounts/mysql/log/mysql-slow.log:/var/log/mysql-slow.log
-  
-    mqtt:
-        restart: always
-        hostname: mqtt
-        container_name: MQTT
-        image: eclipse-mosquitto:latest
-        environment:
-          TZ: "Asia/Jerusalem"
-        volumes:
-          - /home/ziv/docker-mounts/mqtt/data:/mosquitto/data
-          - /home/ziv/docker-mounts/mqtt/config:/mosquitto/config
-          - /home/ziv/docker-mounts/mqtt/log:/mosquitto/log
-        network_mode: "bridge"
-        ports:
-          - "1883:1883"
-          - "9001:9001"
+#    mysql:
+#        restart: always
+#        hostname: mysql
+#        container_name: mysql
+#        image: mysql
+#        environment:
+#          PUID: 0
+#          PGID: 0
+#          TZ: "Asia/Jerusalem"
+#          MYSQL_ROOT_PASSWORD: zivarzi88
+#          MYSQL_ROOT_HOST: "%"
+#          
+#        cap_add:
+#          - SYS_NICE 
+#        ports:
+#          - "3306:3306"
+#          - "33060:33060"
+#        volumes:
+#          - /home/ziv/docker-mounts/mysql/data:/var/lib/mysql
+#          - /home/ziv/docker-mounts/mysql/etc-mysql/my.cnf:/etc/mysql/my.cnf
+#          - /home/ziv/docker-mounts/mysql/etc-mysql/conf.d:/etc/mysql/conf.d
+#          - /home/ziv/docker-mounts/mysql/log/mysql-slow.log:/var/log/mysql-slow.log
+#  
+#    mqtt:
+#        restart: always
+#        hostname: mqtt
+#        container_name: MQTT
+#        image: eclipse-mosquitto:latest
+#        environment:
+#          TZ: "Asia/Jerusalem"
+#        volumes:
+#          - /home/ziv/docker-mounts/mqtt/data:/mosquitto/data
+#          - /home/ziv/docker-mounts/mqtt/config:/mosquitto/config
+#          - /home/ziv/docker-mounts/mqtt/log:/mosquitto/log
+#        network_mode: "bridge"
+#        ports:
+#          - "1883:1883"
+#          - "9001:9001"
 
     cloud9:
         restart: always
@@ -65,9 +65,9 @@ services:
         hostname: homeassistant
         container_name: Home-Assistant
         image: homeassistant/home-assistant:stable
-        depends_on: 
-          - mysql
-          - mqtt
+#        depends_on: 
+#          - mysql
+#          - mqtt
         labels:
           com.ouroboros.enable: "false"
         environment:
@@ -95,28 +95,28 @@ services:
         ports:
           - "9000:9000"
 
-    nginx: 
-      restart: always
-      image: nginx:latest
-      container_name: nginx
-      privileged: true
-      environment:
-        PUID: 0
-        PGID: 0
-      volumes:
-        - /home/ziv/docker-mounts/nginx/etc/nginx:/etc/nginx
-        - /home/ziv/docker-mounts/certbot/etc/letsencrypt:/etc/letsencrypt
-        - /home/ziv/docker-mounts/certbot/www:/var/www/certbot
-        - /media/ziv/RouterHDD/ftp:/ftp
-      network_mode: "host"
+#    nginx: 
+#      restart: always
+#      image: nginx:latest
+#      container_name: nginx
+#      privileged: true
+#      environment:
+#        PUID: 0
+#        PGID: 0
+#      volumes:
+#        - /home/ziv/docker-mounts/nginx/etc/nginx:/etc/nginx
+#        - /home/ziv/docker-mounts/certbot/etc/letsencrypt:/etc/letsencrypt
+#        - /home/ziv/docker-mounts/certbot/www:/var/www/certbot
+#        - /media/ziv/RouterHDD/ftp:/ftp
+#      network_mode: "host"
       
 
-    nginx-ui:
-      image: schenkd/nginx-ui:latest
-      ports:
-        - 8282:8080
-      volumes:
-        - /home/ziv/docker-mounts/nginx/etc/nginx:/etc/nginx
+#    nginx-ui:
+#      image: schenkd/nginx-ui:latest
+#      ports:
+#        - 8282:8080
+#      volumes:
+#        - /home/ziv/docker-mounts/nginx/etc/nginx:/etc/nginx
 
     ouroboros:
       image: pyouroboros/ouroboros
@@ -134,18 +134,18 @@ services:
         - CRON="0 6 * * *"
       restart: always
 
-    organizr:
-      image: linuxserver/organizr
-      container_name: organizr
-      environment:
-        - PUID=1000
-        - PGID=1000
-        - TZ=Asia/Jerusalem
-      volumes:
-        - /home/dima/docker-mounts/organizr:/config
-      ports:
-        - 9983:80
-      restart: always
+#    organizr:
+#      image: linuxserver/organizr
+#      container_name: organizr
+#      environment:
+#        - PUID=1000
+#        - PGID=1000
+#        - TZ=Asia/Jerusalem
+#      volumes:
+#        - /home/ziv/docker-mounts/organizr:/config
+#      ports:
+#        - 9983:80
+#      restart: always
       
     esphome:
       container_name: esphome
@@ -157,55 +157,113 @@ services:
       # ports:
       #   - "6052:6052"
       
-    pihole:
-      container_name: pihole
-      hostname: pihole
-      image: pihole/pihole:latest
-      ports:
-        - "192.168.1.141:53:53/tcp"
-        - "192.168.1.141:53:53/udp"
-        - "192.168.1.141:67:67/udp"
-        - "0.0.0.0:1080:80/tcp"
-        - "0.0.0.0:10443:443/tcp"
-      environment:
-        TZ: 'Asia/Jerusalem'
-        WEBPASSWORD: ${PIHOLE_PASS}
-      volumes:
-        - '/home/ziv/docker-mounts/pihole/etc-pihole/:/etc/pihole/'
-        - '/home/ziv/docker-mounts/pihole/etc-hosts:/etc/hosts'
-        - '/home/ziv/docker-mounts/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
-        - '/home/ziv/docker-mounts/pihole/pihole.log:/var/log/pihole.log'
-      dns:
-        - 127.0.0.1
-        - 9.9.9.9
-      cap_add:
-        - NET_ADMIN
-      restart: always
+#    pihole:
+#      container_name: pihole
+#      hostname: pihole
+#      image: pihole/pihole:latest
+#      ports:
+#        - "192.168.1.141:53:53/tcp"
+#        - "192.168.1.141:53:53/udp"
+#        - "192.168.1.141:67:67/udp"
+#        - "0.0.0.0:1080:80/tcp"
+#        - "0.0.0.0:10443:443/tcp"
+#      environment:
+#        TZ: 'Asia/Jerusalem'
+#        WEBPASSWORD: ${PIHOLE_PASS}
+#      volumes:
+#        - '/home/ziv/docker-mounts/pihole/etc-pihole/:/etc/pihole/'
+#        - '/home/ziv/docker-mounts/pihole/etc-hosts:/etc/hosts'
+#        - '/home/ziv/docker-mounts/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+#        - '/home/ziv/docker-mounts/pihole/pihole.log:/var/log/pihole.log'
+#      dns:
+#        - 127.0.0.1
+#        - 9.9.9.9
+#      cap_add:
+#        - NET_ADMIN
+#      restart: always
      
     mongo:
       container_name: mongo
       image: mongo:4.4.1-bionic
       restart: unless-stopped
       environment:
-        - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
-        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
-        - MONGO_INITDB_DATABASE=admin
+        - MONGO_INITDB_ROOT_USERNAME=ziv
+        - MONGO_INITDB_ROOT_PASSWORD=zivarzi88
+        - MONGO_INITDB_DATABASE=unifi
       volumes:
         - /home/ziv/docker-mounts/mongo/db:/data/db
         - /home/ziv/docker-mounts/mongo/db/config:/data/configdb
         - /home/ziv/docker-mounts/mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       ports:
         - "27017:27017"
-        
-          
-    filebrowser:
-      container_name: filebrowser
-      image: hurlenko/filebrowser
-      ports:
-        - 12123:8080
-      volumes:
-        - /media/ziv/RouterHDD/:/data
-        - /home/ziv/docker-mounts/filebrowser:/config
+
+    unifi-network-application:
+      image: lscr.io/linuxserver/unifi-network-application:latest
+      container_name: unifi-network-application
+      depends_on: 
+        - mongo      
       environment:
-        - FB_BASEURL=/filebrowser
+        - PUID=1000
+        - PGID=1000
+        - TZ=Asia/Jerusalem
+        - MONGO_USER=ziv
+        - MONGO_PASS=zivarzi88
+        - MONGO_HOST=mongo
+        - MONGO_PORT=27017
+        - MONGO_DBNAME=unifi
+        - MEM_LIMIT=1024 #optional
+        - MEM_STARTUP=1024 #optional
+        - MONGO_TLS= #optional
+        - MONGO_AUTHSOURCE= #optional
+      volumes:
+        - /home/ziv/docker-mounts/unifi:/config
+      ports:
+        - 8443:8443
+        - 3478:3478/udp
+        - 10001:10001/udp
+        - 8080:8043
+        - 1900:1900/udp #optional
+        - 8843:8843 #optional
+        - 8880:8880 #optional
+        - 6789:6789 #optional
+        - 5514:5514/udp #optional
+      restart: unless-stopped        
+
+    deconz:
+      image: deconzcommunity/deconz:stable
+      container_name: deconz
       restart: always
+      privileged: true                # This is important! Without it, the deCONZ image won't be able to connect to Conbee II.
+      ports: 
+        - 8088:80
+        - 443:443
+      volumes:
+        - /opt/deCONZ:/opt/deCONZ
+      devices:
+        - /dev/ttyACM0                # This is the USB device that Conbee II is running on.
+      environment:
+        - TZ=Asia/Jerusalem
+        - DECONZ_WEB_PORT=80
+        - DECONZ_WS_PORT=443
+        - DEBUG_INFO=1
+        - DEBUG_APS=0
+        - DEBUG_ZCL=0
+        - DEBUG_ZDP=0
+        - DEBUG_OTA=0
+        - DEBUG_HTTP=0
+        - DECONZ_DEVICE=/dev/ttyACM0   # This is the USB device that Conbee II is running on.
+        - DECONZ_START_VERBOSE=0
+      hostname: deconz      
+          
+#    filebrowser:
+#      container_name: filebrowser
+#      image: hurlenko/filebrowser
+#      ports:
+#        - 12123:8080
+#      volumes:
+#        - /media/ziv/RouterHDD/:/data
+#        - /home/ziv/docker-mounts/filebrowser:/config
+#      environment:
+#        - FB_BASEURL=/filebrowser
+#      restart: always
+
