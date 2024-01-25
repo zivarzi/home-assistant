@@ -11,7 +11,7 @@ services:
 #          PUID: 0
 #          PGID: 0
 #          TZ: "Asia/Jerusalem"
-#          MYSQL_ROOT_PASSWORD: zivarzi88
+#          MYSQL_ROOT_PASSWORD: PASS
 #          MYSQL_ROOT_HOST: "%"
 #          
 #        cap_add:
@@ -188,7 +188,7 @@ services:
       restart: unless-stopped
       environment:
         - MONGO_INITDB_ROOT_USERNAME=ziv
-        - MONGO_INITDB_ROOT_PASSWORD=zivarzi88
+        - MONGO_INITDB_ROOT_PASSWORD=PASS
         - MONGO_INITDB_DATABASE=unifi
       volumes:
         - /home/ziv/docker-mounts/mongo/db:/data/db
@@ -207,7 +207,7 @@ services:
         - PGID=1000
         - TZ=Asia/Jerusalem
         - MONGO_USER=ziv
-        - MONGO_PASS=zivarzi88
+        - MONGO_PASS=PASS
         - MONGO_HOST=mongo
         - MONGO_PORT=27017
         - MONGO_DBNAME=unifi
